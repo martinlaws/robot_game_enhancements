@@ -4,5 +4,6 @@ class Laser < Weapon
     @name   = "Laser"
     @weight = 125
     @damage = 25
+    @range  = 1
   end
 end

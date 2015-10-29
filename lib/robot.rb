@@ -34,6 +34,7 @@ class Robot
       @items_weight += item.weight
       @items.push(item)
         if item.is_a? Weapon then @equipped_weapon = item end
+        if ((item.is_a? BoxOfBolts) && self.health <= 80) then item.feed(self) end
       true
     else
       false
@@ -91,11 +92,7 @@ class Robot
   def attack!(enemy)
     begin
       if enemy.is_a? Robot
-        if @equipped_weapon
-          @equipped_weapon.hit(enemy)
-        else
-          enemy.wound(5)
-        end
+        @equipped_weapon.hit(enemy)
       else
         raise "Enemy is not a robot!"
       end
