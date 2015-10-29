@@ -1,5 +1,5 @@
 class Robot
-  attr_reader   :position, :items, :items_weight, :health
+  attr_reader   :position, :items, :items_weight, :health, :range
   attr_accessor :equipped_weapon
   MAX_WEIGHT = 250
   MAX_HP     = 100
@@ -9,7 +9,8 @@ class Robot
     @items            = []
     @items_weight     = 0
     @health           = MAX_HP
-    @equipped_weapon  = nil
+    @equipped_weapon  = Weapon.new('fists', 0, 5)
+    @range            = @equipped_weapon.range
   end
 
   def move_left
@@ -75,10 +76,14 @@ class Robot
 
   def attack(enemy)
     begin
-      if enemy.is_a? Robot
-        if @equipped_weapon then @equipped_weapon.hit(enemy) else enemy.wound(5) end
+      if (enemy.is_a? Robot)
+        if ((enemy.position[0] - @position[0]).abs <= @range) && ((enemy.position[1] - @position[1]).abs <= @range)
+          @equipped_weapon.hit(enemy)
+        else
+          return false
+        end
       else
-        raise "Enemy is not a robot!"
+        raise "Attack error! Enemy is not a robot!"
       end
     end
   end

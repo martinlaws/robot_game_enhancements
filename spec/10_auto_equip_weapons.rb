@@ -17,7 +17,7 @@ describe Robot do
 
     it "should not equip the item as a weapon if it's not a weapon (duh!)" do
       @robot.pick_up(@non_weapon)
-      expect(@robot.equipped_weapon).to be_nil
+      expect(@robot.equipped_weapon.name).to eq('fists')
     end
   end
 end

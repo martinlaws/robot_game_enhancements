@@ -7,7 +7,7 @@ describe Robot do
 
   describe "#equipped_weapon" do
     it "should have no equipped_weapon" do
-      expect(@robot.equipped_weapon).to be_nil
+      expect(@robot.equipped_weapon.name).to eq('fists')
     end
 
     it "sets equipped weapon" do
