@@ -1,12 +1,14 @@
 class Robot
   attr_reader   :position, :items, :items_weight, :health
   attr_accessor :equipped_weapon
+  MAX_WEIGHT = 250
+  MAX_HP     = 100
 
   def initialize
     @position         = [0,0]
     @items            = []
     @items_weight     = 0
-    @health           = 100
+    @health           = MAX_HP
     @equipped_weapon  = nil
   end
 
@@ -27,7 +29,7 @@ class Robot
   end
 
   def pick_up(item)
-    if (@items_weight + item.weight) <= 250
+    if (@items_weight + item.weight) <= MAX_WEIGHT
       @items_weight += item.weight
       @items.push(item)
         if item.is_a? Weapon then @equipped_weapon = item end
@@ -47,8 +49,8 @@ class Robot
   end
 
   def heal(hitpoints)
-    if (@health + hitpoints) >= 100
-      @health = 100
+    if (@health + hitpoints) >= MAX_HP
+      @health = MAX_HP
       false
     else
       @health += hitpoints
@@ -58,11 +60,11 @@ class Robot
 
   def heal!(hitpoints)
     begin
-      if @health = 0
+      if @health == 0
         raise "Robot is dead!" 
       else
-        if (@health + hitpoints) >= 100
-          @health = 100
+        if (@health + hitpoints) >= MAX_HP
+          @health = MAX_HP
         else
           @health += hitpoints
           true
@@ -72,10 +74,12 @@ class Robot
   end
 
   def attack(enemy)
-    if @equipped_weapon
-      @equipped_weapon.hit(enemy)
-    else
-      enemy.wound(5)
+    begin
+      if enemy.is_a? Robot
+        if @equipped_weapon then @equipped_weapon.hit(enemy) else enemy.wound(5) end
+      else
+        raise "Enemy is not a robot!"
+      end
     end
   end
 

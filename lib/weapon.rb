@@ -2,8 +2,7 @@ class Weapon < Item
   attr_reader :name, :weight, :damage
 
   def initialize(name, weight, damage)
-    @name   = name
-    @weight = weight
+    super(name, weight)
     @damage = damage
   end
 

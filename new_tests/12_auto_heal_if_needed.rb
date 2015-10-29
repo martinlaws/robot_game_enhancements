@@ -1,3 +1,4 @@
+require_relative 'spec_helper'
 # The robot should now be smart enough that if it picks up health and needs
 # to consume it, then it will automatically feed on the bolts.
 # It should only feed on the bolts if it needs all of the energy from them

@@ -1,3 +1,4 @@
+require_relative 'spec_helper'
 # Introduce the concept of a ranged weapon: Grenades!
 # Weapons now generally have a default range of 1 but grenades have a range of 2
 

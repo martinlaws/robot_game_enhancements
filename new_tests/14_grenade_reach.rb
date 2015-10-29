@@ -1,3 +1,4 @@
+require_relative 'spec_helper'
 # Since grenades have a range of 2, if the robot has one equipped,
 # it can attack an enemy robot that is 2 tiles away instead of just 1 tile away
 # That said, it will also discard/unequip the grenade
