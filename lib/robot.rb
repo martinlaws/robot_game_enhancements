@@ -1,5 +1,5 @@
 class Robot
-  attr_reader   :position, :items, :items_weight, :health, :range
+  attr_reader   :position, :items, :items_weight, :health, :damage, :range
   attr_accessor :equipped_weapon
   MAX_WEIGHT = 250
   MAX_HP     = 100
@@ -9,8 +9,16 @@ class Robot
     @items            = []
     @items_weight     = 0
     @health           = MAX_HP
-    @equipped_weapon  = Weapon.new('fists', 0, 5)
-    @range            = @equipped_weapon.range
+    @equipped_weapon  = nil
+    @range            = range
+  end
+
+  def range
+    if @equipped_weapon == nil
+      @range = 1
+    else
+      @range = @equipped_weapon.range
+    end
   end
 
   def move_left
@@ -41,7 +49,7 @@ class Robot
     end
   end
 
-  def wound(hitpoints)
+  def wound(hitpoints = 5)
     if (@health - hitpoints) <= 0
       @health = 0
       return false
@@ -75,16 +83,24 @@ class Robot
     end
   end
 
-  def attack(enemy)
-    begin
-      if (enemy.is_a? Robot)
-        if ((enemy.position[0] - @position[0]).abs <= @range) && ((enemy.position[1] - @position[1]).abs <= @range)
-          @equipped_weapon.hit(enemy)
-        else
-          return false
-        end
+  def can_attack?(enemy)
+    if enemy.is_a? Robot
+      if (((enemy.position[0] - self.position[0]).abs <= @range) && ((enemy.position[1] - position[1]).abs <= @range))
+        true
       else
-        raise "Attack error! Enemy is not a robot!"
+       false
+      end
+    else
+      false
+    end
+  end
+
+  def attack(enemy)
+    if can_attack?(enemy)
+      if @equipped_weapon
+        @equipped_weapon.hit(enemy)
+      else
+        enemy.wound(5)
       end
     end
   end
