@@ -10,10 +10,10 @@ class Robot
     @items_weight     = 0
     @health           = MAX_HP
     @equipped_weapon  = nil
-    @range            = range
+    @range            = get_range
   end
 
-  def range
+  def get_range
     if @equipped_weapon == nil
       @range = 1
     else
@@ -85,6 +85,7 @@ class Robot
 
   def can_attack?(enemy)
     if enemy.is_a? Robot
+      @range = get_range
       if (((enemy.position[0] - self.position[0]).abs <= @range) && ((enemy.position[1] - position[1]).abs <= @range))
         true
       else
@@ -99,6 +100,10 @@ class Robot
     if can_attack?(enemy)
       if @equipped_weapon
         @equipped_weapon.hit(enemy)
+          if @equipped_weapon.is_a? Grenade
+            @items.delete(Grenade)
+            @equipped_weapon =nil
+          end
       else
         enemy.wound(5)
       end
@@ -113,5 +118,5 @@ class Robot
         raise "Enemy is not a robot!"
       end
     end
-  end
-end
+  end # ends the attack! method
+end # ends the Robot class

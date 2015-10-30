@@ -4,5 +4,6 @@ class PlasmaCannon < Weapon
     @name   = 'Plasma Cannon'
     @weight = 200
     @damage = 55
+    @range  = 1
   end
 end
