@@ -8,7 +8,7 @@ describe Robot do
 
   describe "#heal!" do
     it "should throw an error when health hits 0" do
-      @robot.wound(105)
+      @robot.wound(150)
       expect { @robot.heal!(5) }.to raise_error
     end
 

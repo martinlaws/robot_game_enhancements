@@ -1,8 +1,10 @@
 class Robot
-  attr_reader   :position, :items, :items_weight, :health, :damage, :range
-  attr_accessor :equipped_weapon
-  MAX_WEIGHT = 250
-  MAX_HP     = 100
+  attr_reader   :position, :items, :items_weight, :damage, :range, :shield
+  attr_accessor :equipped_weapon, :health
+  MAX_WEIGHT     = 250
+  MAX_HP         = 100
+  DEFAULT_SHIELD = 50
+  DEFAULT_DAMAGE = 5
 
   def initialize
     @position         = [0,0]
@@ -11,6 +13,7 @@ class Robot
     @health           = MAX_HP
     @equipped_weapon  = nil
     @range            = get_range
+    @shield           = DEFAULT_SHIELD
   end
 
   def get_range
@@ -49,12 +52,22 @@ class Robot
     end
   end
 
-  def wound(hitpoints = 5)
-    if (@health - hitpoints) <= 0
-      @health = 0
+  def wound(hitpoints)
+    if ((@shield + @health) - hitpoints) <= 0
+      self.health = 0
       return false
     else
-      @health -= hitpoints
+      if self.shield == 0
+        @health -= hitpoints
+      else
+        remaining_damage = (hitpoints - @shield)
+        if remaining_damage > 0
+          @shield = 0
+          @health -= remaining_damage
+        else
+          @shield -= hitpoints
+        end
+      end
     end
   end
 
@@ -111,12 +124,15 @@ class Robot
   end
 
   def attack!(enemy)
-    begin
-      if enemy.is_a? Robot
-        @equipped_weapon.hit(enemy)
-      else
-        raise "Enemy is not a robot!"
-      end
+    if enemy.is_a? Robot
+      @equipped_weapon.hit(enemy)
+    else
+      raise "Enemy is not a robot!"
     end
   end # ends the attack! method
+
+  def recharge   
+    self.shield = DEFAULT_SHIELD
+  end
+
 end # ends the Robot class
