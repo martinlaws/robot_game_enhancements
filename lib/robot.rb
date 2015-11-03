@@ -1,10 +1,13 @@
 class Robot
-  attr_reader   :position, :items, :items_weight, :damage, :range, :shield
-  attr_accessor :equipped_weapon, :health
+  attr_reader    :position, :items, :items_weight, :damage, :range
+  attr_accessor  :equipped_weapon, :health, :shield
+
   MAX_WEIGHT     = 250
   MAX_HP         = 100
   DEFAULT_SHIELD = 50
   DEFAULT_DAMAGE = 5
+  @@robot_list   = []
+
 
   def initialize
     @position         = [0,0]
@@ -14,6 +17,7 @@ class Robot
     @equipped_weapon  = nil
     @range            = get_range
     @shield           = DEFAULT_SHIELD
+    Robot.add_to_list(self)
   end
 
   def get_range
@@ -133,6 +137,14 @@ class Robot
 
   def recharge   
     self.shield = DEFAULT_SHIELD
+  end
+
+  def self.show_list
+    @@robot_list
+  end
+
+  def self.add_to_list(robot)
+    @@robot_list.push(robot)
   end
 
 end # ends the Robot class

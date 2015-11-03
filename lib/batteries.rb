@@ -10,4 +10,3 @@ class Batteries < BoxOfBolts
     robot.recharge
   end
 end
-end
